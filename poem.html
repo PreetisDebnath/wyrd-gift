@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital@0;1&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 40px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffd1ff 0%, #fae8ff 50%, #e0f4ff 100%);
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            gap: 20px;
+        }
+        .image-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .image-placeholder:hover {
+            transform: scale(1.05);
+        }
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 10% 20%, transparent 20%, rgba(255,182,193,0.1) 21%),
+                radial-gradient(circle at 90% 80%, transparent 20%, rgba(135,206,250,0.1) 21%),
+                radial-gradient(circle at 50% 50%, transparent 20%, rgba(221,160,221,0.1) 21%);
+            background-size: 50px 50px, 60px 60px, 70px 70px;
+            opacity: 0.5;
+            z-index: 0;
+            animation: patternMove 20s linear infinite;
+        }
+        .title {
+            font-family: 'Dancing Script', cursive;
+            color: #8b008b;
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+        .poem {
+            font-size: 1.2em;
+            line-height: 2;
+            color: #4a4a4a;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .stanza {
+            margin-bottom: 30px;
+            position: relative;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.7);
+            transition: transform 0.3s ease;
+        }
+        .stanza:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .wyrd {
+            color: #9932cc;
+            font-style: italic;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            animation: wordPulse 2s ease-in-out infinite;
+        }
+        .signature {
+            margin-top: 40px;
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            color: #ff1493;
+            animation: signatureFloat 4s ease-in-out infinite;
+        }
+        .decorative-element {
+            position: absolute;
+            font-size: 24px;
+            color: #ff69b4;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.7;
+            z-index: 2;
+        }
+        .corner-decoration {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            opacity: 0.15;
+            animation: cornerPulse 4s ease-in-out infinite;
+        }
+        .top-left {
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #ff69b4 0%, #da70d6 100%);
+            border-radius: 0 0 150px 0;
+        }
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(135deg, #4169e1 0%, #9370db 100%);
+            border-radius: 150px 0 0 0;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes titleGlow {
+            0% { text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+            50% { text-shadow: 2px 2px 15px rgba(139,0,139,0.3); }
+            100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        }
+        @keyframes wordPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes signatureFloat {
+            0% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0) rotate(-2deg); }
+        }
+        @keyframes cornerPulse {
+            0% { opacity: 0.15; }
+            50% { opacity: 0.25; }
+            100% { opacity: 0.15; }
+        }
+        @keyframes patternMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="background-pattern"></div>
+        <div class="corner-decoration top-left"></div>
+        <div class="corner-decoration bottom-right"></div>
+        
+        <!-- Updated decorative elements -->
+        <i class="decorative-element fas fa-birthday-cake" style="top: 5%; left: 10%;"></i>
+        <i class="decorative-element fas fa-gift" style="top: 15%; right: 15%;"></i>
+        <i class="decorative-element fas fa-star" style="bottom: 20%; left: 15%;"></i>
+        <i class="decorative-element fas fa-magic" style="top: 30%; right: 10%;"></i>
+        <i class="decorative-element fas fa-sparkles" style="bottom: 15%; right: 20%;"></i>
+        
+        <h1 class="title">✨ A Belated Gift🎂</h1>
+        
+        <!-- Added image containers -->
+        <div class="image-container">
+            <img src="birthday-photo.jpg" alt="birthday-photo" class="image-placeholder" />
+            <img src="birthday2-photo.jpg" alt="birthday2.poem" class="image-placeholder" />
+        </div>
+        
+        <div class="poem">
+            <!-- Poem content remains the same -->
+            <div class="stanza">
+                I write of you, though words may fail,<br>
+                A mind so bright, a soul so hale.<br>
+                Genuine, lovely, with grace untold,<br>
+                A smile that turns the dull to gold.
+            </div>
+            
+            <div class="stanza">
+                You wrote of <span class="wyrd">WYRD</span>, of destiny's call,<br>
+                Of paths unpaved, of standing tall.<br>
+                Not bound by what the world defines,<br>
+                But led by dreams, by untamed signs.
+            </div>
+            
+            <div class="stanza">
+                Each time I speak, nerves take hold,<br>
+                Yet patience in you is quiet and bold.<br>
+                You laugh it off, you never mind,<br>
+                A kindness rare, a heart so kind.
+            </div>
+            
+            <div class="stanza">
+                I fumble, I fall, I learn, I rise,<br>
+                A journey traced in uncertain skies.<br>
+                Yet in your words, I found my way,<br>
+                A light that led me past my fray.
+            </div>
+            
+            <div class="stanza">
+                Destiny unfolds with each new stride,<br>
+                Not a place to reach, but a flame inside.<br>
+                So here's to the journey, the dream, the climb,<br>
+                A belated wish, but pure and prime.
+            </div>
+            
+            <div class="stanza">
+                Happy birthday to the one so free,<br>
+                Who taught me to walk the path of <span class="wyrd">me</span>.
+            </div>
+        </div>
+        
+        <div class="signature">✨ For Hiya 🎉</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ffe1e1, #fff3e6, #fff0f5);
+            font-family: 'Playfair Display', serif;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .message {
+            font-size: 2rem;
+            color: #ff69b4;
+            margin-bottom: 2rem;
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff69b4, #ff8fab);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #cccccc, #999999);
+            color: white;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Decorative elements */
+        .sparkle {
+            position: absolute;
+            color: #ffd700;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .border-animation {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 3px solid transparent;
+            border-radius: 25px;
+            animation: borderGlow 2s infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { 
+                border-color: rgba(255, 105, 180, 0.3);
+                box-shadow: 0 0 20px rgba(255, 105, 180, 0.2);
+            }
+            50% { 
+                border-color: rgba(255, 192, 203, 0.7);
+                box-shadow: 0 0 30px rgba(255, 192, 203, 0.4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="border-animation"></div>
+        <!-- Add sparkles -->
+        <i class="fas fa-star sparkle" style="top: 10%; left: 10%;"></i>
+        <i class="fas fa-star sparkle" style="top: 20%; right: 15%;"></i>
+        <i class="fas fa-star sparkle" style="bottom: 15%; left: 20%;"></i>
+        <i class="fas fa-star sparkle" style="bottom: 25%; right: 10%;"></i>
+        
+        <div class="message">Do you accept this gift?</div>
+        <div class="buttons">
+            <button class="btn btn-yes" onclick="window.location.href='poem.html'">Yes</button>
+            <button class="btn btn-no" id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        let pointerX = 0, pointerY = 0;
+        let isTouchDevice = false;
+
+        // Function to handle both mouse and touch events
+        function updatePointerPosition(x, y) {
+            pointerX = x;
+            pointerY = y;
+            
+            const rect = noBtn.getBoundingClientRect();
+            const btnCenterX = rect.left + rect.width / 2;
+            const btnCenterY = rect.top + rect.height / 2;
+            
+            const distX = pointerX - btnCenterX;
+            const distY = pointerY - btnCenterY;
+            
+            // Move button away when pointer gets close
+            if (Math.abs(distX) < 150 && Math.abs(distY) < 150) {
+                const angle = Math.atan2(distY, distX);
+                const moveDistance = isTouchDevice ? 200 : 150;
+                const moveX = -Math.cos(angle) * moveDistance;
+                const moveY = -Math.sin(angle) * moveDistance;
+                
+                // Keep button within viewport
+                const maxMoveX = window.innerWidth - rect.width;
+                const maxMoveY = window.innerHeight - rect.height;
+                
+                const constrainedX = Math.max(0, Math.min(maxMoveX, rect.left + moveX)) - rect.left;
+                const constrainedY = Math.max(0, Math.min(maxMoveY, rect.top + moveY)) - rect.top;
+                
+                noBtn.style.transform = `translate(${constrainedX}px, ${constrainedY}px)`;
+                noBtn.style.transition = 'transform 0.3s ease';
+            }
+            // Reset position if pointer is far enough
+            else if (Math.abs(distX) > 250 || Math.abs(distY) > 250) {
+                noBtn.style.transform = 'translate(0, 0)';
+            }
+        }
+
+        // Mouse events
+        document.addEventListener('mousemove', (e) => {
+            if (!isTouchDevice) {
+                updatePointerPosition(e.clientX, e.clientY);
+            }
+        });
+
+        // Touch events
+        document.addEventListener('touchstart', (e) => {
+            isTouchDevice = true;
+            const touch = e.touches[0];
+            updatePointerPosition(touch.clientX, touch.clientY);
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            updatePointerPosition(touch.clientX, touch.clientY);
+            e.preventDefault(); // Prevent scrolling while trying to touch button
+        }, { passive: false });
+
+        // Make button move randomly on mobile tap
+        noBtn.addEventListener('touchstart', (e) => {
+            const rect = noBtn.getBoundingClientRect();
+            const randomAngle = Math.random() * Math.PI * 2;
+            const moveDistance = 200;
+            const moveX = Math.cos(randomAngle) * moveDistance;
+            const moveY = Math.sin(randomAngle) * moveDistance;
+            
+            // Keep button within viewport
+            const maxMoveX = window.innerWidth - rect.width;
+            const maxMoveY = window.innerHeight - rect.height;
+            
+            const constrainedX = Math.max(0, Math.min(maxMoveX, rect.left + moveX)) - rect.left;
+            const constrainedY = Math.max(0, Math.min(maxMoveY, rect.top + moveY)) - rect.top;
+            
+            noBtn.style.transform = `translate(${constrainedX}px, ${constrainedY}px)`;
+            e.preventDefault();
+        });
+
+        // Prevent default touch behavior on the No button
+        noBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
